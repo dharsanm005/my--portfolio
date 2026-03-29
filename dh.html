@@ -785,6 +785,59 @@ footer {
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: rgba(0,255,200,0.2); border-radius: 2px; }
 
+/* MODALS */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
+  justify-content: center;
+  align-items: center;
+}
+.modal.active { display: flex; }
+.modal-content {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 800px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.modal-close {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.2s;
+}
+.modal-close:hover { color: var(--accent); }
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+}
+.modal iframe {
+  width: 100%;
+  height: 60vh;
+  border: none;
+  border-radius: 8px;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
 /* RESPONSIVE */
 @media (max-width: 900px) {
   #hero { grid-template-columns: 1fr; text-align: center; padding: 7rem 2rem 4rem; }
@@ -833,8 +886,8 @@ footer {
     </h1>
     <p class="hero-sub">I build dynamic web applications and explore the world of data. Passionate about clean code, smart solutions, and continuous learning.</p>
     <div class="hero-cta">
-      <a href="#projects" class="btn btn-primary">View My Work →</a>
-      <a href="#contact" class="btn btn-ghost">Get In Touch</a>
+      <button class="btn btn-primary" onclick="openResumeModal()">View Resume →</button>
+      <button class="btn btn-ghost" onclick="openCertModal()">View Certifications</button>
     </div>
   </div>
 
@@ -953,6 +1006,10 @@ footer {
 <section id="certifications">
   <div class="section-label">04 — Certifications</div>
   <h2 class="section-title">Credentials</h2>
+  <div style="display:flex; gap:0.8rem; flex-wrap:wrap; margin-bottom:1.2rem;">
+    <a href="Dharsan%20M__Resume.pdf" class="btn btn-primary" download>Download Resume PDF</a>
+    <a href="Dharsan%20M__Resume.docx" class="btn btn-ghost" download>Download Resume DOCX</a>
+  </div>
   <div class="cert-list reveal">
     <div class="cert-card">
       <div>
@@ -1018,6 +1075,45 @@ footer {
 <footer>
   &copy; 2025 Dharsan M — Crafted with passion &amp; code
 </footer>
+
+<!-- MODALS -->
+<div id="resumeModal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeResumeModal()">✕</button>
+    <h2 class="modal-title">My Resume</h2>
+    <iframe src="Dharsan%20M__Resume.pdf" type="application/pdf"></iframe>
+  </div>
+</div>
+
+<div id="certModal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeCertModal()">✕</button>
+    <h2 class="modal-title">Certifications & Credentials</h2>
+    <div class="cert-list" style="border-top:1px solid var(--border);padding-top:1.5rem;">
+      <div class="cert-card" style="background:transparent;border:1px solid var(--border);margin-bottom:1rem;">
+        <div>
+          <div class="cert-name">Front End Development — HTML</div>
+          <div class="cert-portal">Great Learning Academy</div>
+        </div>
+        <div class="cert-badge">✓ Certified</div>
+      </div>
+      <div class="cert-card" style="background:transparent;border:1px solid var(--border);margin-bottom:1rem;">
+        <div>
+          <div class="cert-name">Introduction to Machine Learning</div>
+          <div class="cert-portal">Infosys Springboard</div>
+        </div>
+        <div class="cert-badge">✓ Certified</div>
+      </div>
+      <div class="cert-card" style="background:transparent;border:1px solid var(--border);">
+        <div>
+          <div class="cert-name">Introduction to Data Science</div>
+          <div class="cert-portal">Great Learning Academy</div>
+        </div>
+        <div class="cert-badge">✓ Certified</div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 // ── CUSTOM CURSOR ──
@@ -1139,6 +1235,37 @@ const typed = document.querySelector('.hero-tag');
 if (typed) {
   typed.style.opacity = '1';
 }
+
+// ── MODAL FUNCTIONS ──
+function openResumeModal() {
+  document.getElementById('resumeModal').classList.add('active');
+}
+function closeResumeModal() {
+  document.getElementById('resumeModal').classList.remove('active');
+}
+function openCertModal() {
+  document.getElementById('certModal').classList.add('active');
+}
+function closeCertModal() {
+  document.getElementById('certModal').classList.remove('active');
+}
+
+// Close modals when clicking outside
+document.querySelectorAll('.modal').forEach(modal => {
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+    }
+  });
+});
+
+// Close modals on Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.getElementById('resumeModal').classList.remove('active');
+    document.getElementById('certModal').classList.remove('active');
+  }
+});
 </script>
 </body>
 </html>
